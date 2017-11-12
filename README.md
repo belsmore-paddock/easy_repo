@@ -6,3 +6,7 @@ Goal is to build a mechanism for use with EntityFramework for code-first project
 ## Authors
 
 * **Bradley Elsmore** - *Initial work* - [BradleyElsmore](https://github.com/bradleyelsmore)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
