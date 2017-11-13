@@ -8,12 +8,12 @@
     using System.Linq.Expressions;
 
     /// <summary>
-    ///   The repository.
+    ///   The generic repository implementation of IRepository.
     /// </summary>
     /// <typeparam name="TKey">
     ///   Type indicating the primary key type for the repo implementation.
     /// </typeparam>
-    public class Repository<TKey> : IRepository<TKey>
+    public class GenericRepository<TKey> : IRepository<TKey>
     {
         #region fields
 
@@ -27,22 +27,26 @@
         #region public constructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Repository{TKey}"/> class.
+        ///   Initializes a new instance of the <see cref="GenericRepository{TKey}"/> class.
         /// </summary>
         /// <param name="context">
         ///   The context to be used by this repository.
         /// </param>
-        public Repository(DbContext context)
+        public GenericRepository(DbContext context)
         {
             this.context = context;
         }
 
         #endregion
 
+        #region events
+
         /// <summary>
         ///   The before action invoked before any database CRUD interaction.
         /// </summary>
         internal event EventHandler BeforeAction;
+
+        #endregion
 
         #region public methods
 
@@ -153,7 +157,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occured during the Add Entity.\r\n{ex.Message}");
+                throw new Exception($"An error occured while adding an entity.\r\n{ex.Message}");
             }
         }
 
@@ -184,7 +188,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occured during the Update Entity.\r\n{ex.Message}");
+                throw new Exception($"An error occured while updating an entity.\r\n{ex.Message}");
             }
         }
 
@@ -212,7 +216,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occured during the Delete Entity.\r\n{ex.Message}");
+                throw new Exception($"An error occured while deleting an entity.\r\n{ex.Message}");
             }
         }
 
@@ -221,7 +225,7 @@
         #region protected methods
 
         /// <summary>
-        ///   The on before action invokes the BeforeAction event if specifie.
+        ///   The on before action invokes the BeforeAction event if specified.
         /// </summary>
         protected virtual void OnBeforeAction()
         {

@@ -8,12 +8,12 @@ namespace EasyRepository
 
     /// <inheritdoc />
     /// <summary>
-    ///   The unit of work.
+    ///   The unit of work using a generic repository.
     /// </summary>
     /// <typeparam name="TKey">
     ///   Type parameter to be used as the model identifier (i.e. Guid, int, etc).
     /// </typeparam>
-    public class UnitOfWork<TKey> : IUnitOfWork
+    public class GenericUnitOfWork<TKey> : IUnitOfWork
     {
         #region fields
 
@@ -32,15 +32,15 @@ namespace EasyRepository
         #region public constructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="UnitOfWork{TKey}"/> class.
+        ///   Initializes a new instance of the <see cref="GenericUnitOfWork{TKey}"/> class.
         /// </summary>
         /// <param name="context">
         ///   The database context to be used for database interactions.
         /// </param>
-        public UnitOfWork(DbContext context)
+        public GenericUnitOfWork(DbContext context)
         {
             this.context = context;
-            var repository = new Repository<TKey>(context);
+            var repository = new GenericRepository<TKey>(context);
             repository.BeforeAction += this.OnBeforeAction;
             this.Repository = repository;
         }
@@ -76,7 +76,8 @@ namespace EasyRepository
                 }
             }
 
-            if (this.Repository is Repository<TKey> repository)
+            // TODO: Consider alternatives to this to something a little cleaner.
+            if (this.Repository is GenericRepository<TKey> repository)
             {
                 repository.BeforeAction -= this.OnBeforeAction;
             }
@@ -136,17 +137,15 @@ namespace EasyRepository
                 this.context.SaveChanges();
                 this.transactionScope.Commit();
             }
+            catch (DbEntityValidationException ex)
+            {
+                this.RollbackTransaction();
+                this.HandleDbEntityValidationException(ex);
+            }
             catch (Exception ex)
             {
                 this.RollbackTransaction();
-                if (ex is DbEntityValidationException validationException)
-                {
-                    this.HandleDbEntityValidationException(validationException);
-                }
-                else
-                {
-                    throw new Exception($"An error occured during the Commit transaction.\r\n{ex.Message}");
-                }
+                throw new Exception($"An error occured during the Commit transaction.\r\n{ex.Message}");
             }
             finally
             {

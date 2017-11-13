@@ -20,7 +20,7 @@
         void CommitTransaction();
 
         /// <summary>
-        ///   Rollbacks the transaction.
+        ///   Rollsback the transaction.
         /// </summary>
         void RollbackTransaction();
 
