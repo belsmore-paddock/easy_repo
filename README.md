@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bradleyelsmore/easy_repo.svg?branch=master)](https://travis-ci.org/bradleyelsmore/easy_repo)
+
 # easy_repo
 A very basic unit of work with generic repository interface plus implementation. 
 
