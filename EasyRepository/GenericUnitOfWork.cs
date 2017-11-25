@@ -58,6 +58,7 @@ namespace EasyRepository
 
         #region public methods
 
+        /// <inheritdoc />
         /// <summary>
         ///   The dispose method destroys the database context used with the current UoW.
         /// </summary>
@@ -83,6 +84,7 @@ namespace EasyRepository
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///   Begins a transaction for the current UoW.
         /// </summary>
@@ -111,6 +113,7 @@ namespace EasyRepository
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///   The commit transaction commits all pending context changes to the database.
         /// </summary>
@@ -156,6 +159,7 @@ namespace EasyRepository
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         ///   The rollback transaction returns the context to the inital state it
         ///   was when BeginTransaction() was called.
@@ -179,6 +183,24 @@ namespace EasyRepository
                 throw new Exception(
                     $"An error occured during the Rollback transaction.\r\n{ex.Message}");
             }
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// The find repository.
+        /// </summary>
+        /// <param name="type">
+        /// The type.
+        /// </param>
+        /// <typeparam name="T">
+        /// Type parameter to be used as the model identifier (i.e. Guid, int, etc).
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="IRepository{T}"/>.
+        /// </returns>
+        public IRepository<T> FindRepository<T>(Type type)
+        {
+            return this.Repository as IRepository<T>;
         }
 
         #endregion
